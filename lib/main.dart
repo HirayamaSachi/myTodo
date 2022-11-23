@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:my_todo/todoList.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -37,33 +37,35 @@ class _MyHomePageState extends State<MyHomePage> {
     textController.dispose();
     super.dispose();
   }
+  List<String> todoLists = [];
 
-  List<String> todoLists = ["起きる", "寝る", "たべる"];
-  String todo = "";
+  // setState処理
   void updateTodoList(todo) {
     setState(() {
       todoLists.add(todo);
     });
   }
 
+// ダイアログ
   displayDiaLog(BuildContext context) {
+    var todo=Todo("");
     return showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: Text(todo),
+              title: Text('タスク追加'),
               content: TextField(
                 controller: textController,
                 onChanged: (value) {
                   setState(() {
-                    todo = value;
+                  todo=Todo(value);
                   });
                 },
               ),
               actions: [
                 ElevatedButton(
-                  onPressed: (todo.isEmpty)
+                  onPressed: (todo=="")
                       ? null
                       : () {
                           updateTodoList(textController.text);
@@ -80,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // タスク項目表示処理
     return Scaffold(
       appBar: AppBar(
         title: Text('TodoApp'),
@@ -112,6 +115,7 @@ class showTodoList extends StatefulWidget {
   State<showTodoList> createState() => _showTodoListState();
 }
 
+// TODOリスト表示処理
 class _showTodoListState extends State<showTodoList> {
   @override
   Widget build(BuildContext context) {
