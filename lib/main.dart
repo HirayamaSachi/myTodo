@@ -40,6 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<String> todoLists = ["起きる", "寝る", "たべる"];
   String todo = "";
+  void updateTodoList(todo) {
+    setState(() {
+      todoLists.add(todo);
+    });
+  }
 
   displayDiaLog(BuildContext context) {
     return showDialog(
@@ -61,10 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: (todo.isEmpty)
                       ? null
                       : () {
-                          setState(() {
-                            Navigator.pop(context);
-                            textController.clear();
-                          });
+                          updateTodoList(textController.text);
+                          textController.clear();
+                          Navigator.pop(context);
                         },
                   child: Text('追加'),
                 )
@@ -86,20 +90,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = displayDiaLog(context);
-          setState(() {
-          todo=result??todo;
-          });
+        onPressed: () {
+          displayDiaLog(context);
         },
-        // child: Icon(Icons.add),
-        child: Text(todo),
+        child: Icon(Icons.add),
+        // child: Text(todo),
       ),
     );
   }
 }
 
-class showTodoList extends StatelessWidget {
+class showTodoList extends StatefulWidget {
   const showTodoList({
     Key? key,
     required this.todoLists,
@@ -108,9 +109,14 @@ class showTodoList extends StatelessWidget {
   final List<String> todoLists;
 
   @override
+  State<showTodoList> createState() => _showTodoListState();
+}
+
+class _showTodoListState extends State<showTodoList> {
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: todoLists.length,
+      itemCount: widget.todoLists.length,
       itemBuilder: (BuildContext context, int index) {
         return Slidable(
             actionPane: SlidableDrawerActionPane(),
@@ -127,7 +133,7 @@ class showTodoList extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 60,
                 child: Text(
-                  todoLists[index],
+                  widget.todoLists[index],
                   style: TextStyle(fontSize: 15),
                 )));
       },
