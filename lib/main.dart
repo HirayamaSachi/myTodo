@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         });
   }
-
   @override
   Widget build(BuildContext context) {
     // タスク項目表示処理
@@ -115,8 +114,13 @@ class showTodoList extends StatefulWidget {
   State<showTodoList> createState() => _showTodoListState();
 }
 
-// TODOリスト表示処理
 class _showTodoListState extends State<showTodoList> {
+
+    void deleteTodoList(todo){
+    setState(() {
+    widget.todoLists.remove(todo);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -129,7 +133,9 @@ class _showTodoListState extends State<showTodoList> {
                 caption: '削除',
                 color: Colors.red,
                 icon: Icons.delete,
-                onTap: () {},
+                onTap: () {
+                  deleteTodoList(widget.todoLists[index]);
+                },
               )
             ],
             child: Container(
