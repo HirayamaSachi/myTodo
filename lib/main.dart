@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -37,17 +38,21 @@ class _MyHomePageState extends State<MyHomePage> {
     textController.dispose();
     super.dispose();
   }
-  List<Map<String, dynamic>> todoLists = [  ];
+
+  List<Map<String, dynamic>> todoLists = [];
 
   // setState処理
   void updateTodoList(todo) {
     setState(() {
-      todoLists+=[ {'name':todo,'completed':false} ];
+      todoLists += [
+        {'name': todo, 'completed': false}
+      ];
     });
   }
+
 // ダイアログ
   displayDiaLog(BuildContext context) {
-    var todo=Todo("");
+    var todo = Todo("");
     return showDialog(
         context: context,
         builder: (context) {
@@ -58,13 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: textController,
                 onChanged: (value) {
                   setState(() {
-                  todo=Todo(value);
+                    todo = Todo(value);
                   });
                 },
               ),
               actions: [
                 ElevatedButton(
-                  onPressed: (todo=="")
+                  onPressed: (todo == "")
                       ? null
                       : () {
                           updateTodoList(textController.text);
@@ -78,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         });
   }
+
   @override
   Widget build(BuildContext context) {
     // タスク項目表示処理
@@ -106,48 +112,47 @@ class showTodoList extends StatefulWidget {
     required this.todoLists,
   }) : super(key: key);
 
-  final List<Map<String,dynamic>> todoLists;
+  final List<Map<String, dynamic>> todoLists;
 
   @override
   State<showTodoList> createState() => _showTodoListState();
 }
 
 class _showTodoListState extends State<showTodoList> {
-
-    void deleteTodoList(todo){
+  void deleteTodoList(todo) {
     setState(() {
-    widget.todoLists.remove(todo);
+      widget.todoLists.remove(todo);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: widget.todoLists.length,
       itemBuilder: (BuildContext context, int index) {
         return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-            secondaryActions: [
-              IconSlideAction(
-                caption: '削除',
-                color: Colors.red,
-                icon: Icons.delete,
-                onTap: () {
-                  deleteTodoList(widget.todoLists[index]);
-                },
-              )
-            ],
-            child: new CheckboxListTile(
-              value:widget.todoLists[index]['completed'] ,
-               onChanged: ((value) {
-                setState(() {
-            widget.todoLists[index]['completed']=value!;
-                });
+          actionPane: SlidableDrawerActionPane(),
+          secondaryActions: [
+            IconSlideAction(
+              caption: '削除',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: () {
+                deleteTodoList(widget.todoLists[index]);
+              },
+            )
+          ],
+          child: new CheckboxListTile(
+            value: widget.todoLists[index]['completed'],
+            onChanged: ((value) {
+              setState(() {
+                widget.todoLists[index]['completed'] = value!;
+              });
             }),
-            title:Text( widget.todoLists[index]['name'] ),
+            title: Text(widget.todoLists[index]['name']),
             controlAffinity: ListTileControlAffinity.leading,
-            ),
-                );
-                
+          ),
+        );
       },
     );
   }
