@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // setState処理
   void updateTodoList(todo) {
     setState(() {
-      todoLists+=[ {'name':todo,'_completed':false} ];
+      todoLists+=[ {'name':todo,'completed':false} ];
     });
   }
 // ダイアログ
@@ -80,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    print(todoLists);
     // タスク項目表示処理
     return Scaffold(
       appBar: AppBar(
@@ -137,18 +136,15 @@ class _showTodoListState extends State<showTodoList> {
                 },
               )
             ],
-            child: Row(
-              children: [
-              new Checkbox(value: false, onChanged: null),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: 60,
-                    child: Text(
-                      widget.todoLists[index]['name'],
-                      style: TextStyle(fontSize: 15),
-                    )),
-              ],
+            child: new CheckboxListTile(
+              value:widget.todoLists[index]['completed'] ,
+               onChanged: ((value) {
+                setState(() {
+            widget.todoLists[index]['completed']=value!;
+                });
+            }),
+            title:Text( widget.todoLists[index]['name'] ),
+            controlAffinity: ListTileControlAffinity.leading,
             ),
                 );
                 
