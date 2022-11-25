@@ -37,15 +37,14 @@ class _MyHomePageState extends State<MyHomePage> {
     textController.dispose();
     super.dispose();
   }
-  List<String> todoLists = [];
+  List<Map<String, dynamic>> todoLists = [  ];
 
   // setState処理
   void updateTodoList(todo) {
     setState(() {
-      todoLists.add(todo);
+      todoLists+=[ {'name':todo,'_completed':false} ];
     });
   }
-
 // ダイアログ
   displayDiaLog(BuildContext context) {
     var todo=Todo("");
@@ -81,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
+    print(todoLists);
     // タスク項目表示処理
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +107,7 @@ class showTodoList extends StatefulWidget {
     required this.todoLists,
   }) : super(key: key);
 
-  final List<String> todoLists;
+  final List<Map<String,dynamic>> todoLists;
 
   @override
   State<showTodoList> createState() => _showTodoListState();
@@ -145,7 +145,7 @@ class _showTodoListState extends State<showTodoList> {
                     width: MediaQuery.of(context).size.width * 0.8,
                     height: 60,
                     child: Text(
-                      widget.todoLists[index],
+                      widget.todoLists[index]['name'],
                       style: TextStyle(fontSize: 15),
                     )),
               ],
