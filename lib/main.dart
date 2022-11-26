@@ -166,10 +166,13 @@ class _showTodoListState extends State<showTodoList> {
             }),
             title: Text(widget.todoLists[index]['name']),
             secondary: IconButton(
-                onPressed: (() {
+                onPressed: () {
                   _MyHomePageState().displayDiaLog(
-                      context: context, index: index, element: widget.todoLists);
-                }),
+                      context: context,
+                      index: index,
+                      element: widget.todoLists);
+                  ;
+                },
                 icon: Icon(Icons.create)),
             controlAffinity: ListTileControlAffinity.leading,
           ),
