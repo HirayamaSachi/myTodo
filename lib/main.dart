@@ -150,6 +150,9 @@ class _showTodoListState extends State<showTodoList> {
               });
             }),
             title: Text(widget.todoLists[index]['name']),
+            secondary: IconButton(onPressed: ( () {
+                _MyHomePageState().displayDiaLog( context);
+            } ), icon: Icon(Icons.create)),
             controlAffinity: ListTileControlAffinity.leading,
           ),
         );
@@ -157,3 +160,4 @@ class _showTodoListState extends State<showTodoList> {
     );
   }
 }
+
