@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Map<String, dynamic>> todoLists = [];
 
   // setState処理
-  void updateTodoList(todo) {
+  void addTodo(todo) {
     setState(() {
       todoLists += [
         {'name': todo, 'completed': false}
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 // ダイアログ
-  displayDiaLog(BuildContext context) {
+  displayDiaLog({required BuildContext context, int? index, List? element}) {
     var todo = Todo("");
     return showDialog(
         context: context,
@@ -72,7 +72,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: (todo == "")
                       ? null
                       : () {
-                          updateTodoList(textController.text);
+                          if (index != null) {
+                            updateTodo(element, index);
+                          } else {
+                            addTodo(textController.text);
+                          }
                           textController.clear();
                           Navigator.pop(context);
                         },
@@ -83,6 +87,17 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         });
   }
+
+  void updateTodo(List? element, int index) {
+    element![index]['name'] = textController.text;
+  }
+
+// キーメッセージハンドラーの処理中に、次のアサーションがスローされました。
+// setState（）はコンストラクターで呼び出されます：_MyHomePageState＃7B4FD（Lifecycle状態：作成、ウィジェットなし、
+// いいえ
+//マウント）
+//これは、状態オブジェクトでsetState（）を呼び出したときに発生します。
+//に挿入
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          displayDiaLog(context);
+          displayDiaLog(context: context);
         },
         child: Icon(Icons.add),
       ),
@@ -150,9 +165,12 @@ class _showTodoListState extends State<showTodoList> {
               });
             }),
             title: Text(widget.todoLists[index]['name']),
-            secondary: IconButton(onPressed: ( () {
-                _MyHomePageState().displayDiaLog( context);
-            } ), icon: Icon(Icons.create)),
+            secondary: IconButton(
+                onPressed: (() {
+                  _MyHomePageState().displayDiaLog(
+                      context: context, index: index, element: widget.todoLists);
+                }),
+                icon: Icon(Icons.create)),
             controlAffinity: ListTileControlAffinity.leading,
           ),
         );
@@ -160,4 +178,3 @@ class _showTodoListState extends State<showTodoList> {
     );
   }
 }
-
