@@ -37,9 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
         home: Scaffold(
           appBar: AppBar(title: const Text('Todo app')),
           body: Column(
-          children: [
-            ShowWidget()
-          ],
+            children: [ShowWidget()],
           ),
         ));
   }
@@ -55,33 +53,47 @@ class ShowWidget extends StatefulWidget {
 class _ShowTodoState extends State<ShowWidget> {
   @override
   List<Map<String, dynamic>> _todoList = [
-    {'name':'お勉強','completed':false},
-    {'name':'お勉強','completed':false},
-    {'name':'お勉強','completed':false},
-    {'name':'お勉強','completed':false},
-    {'name':'お勉強','completed':false},
-    {'name':'お勉強','completed':false},
-    {'name':'お勉強','completed':false},
-    ];
+    {'name': 'お勉強', 'completed': false},
+    {'name': 'お勉強', 'completed': false},
+    {'name': 'お勉強', 'completed': false},
+    {'name': 'お勉強', 'completed': false},
+    {'name': 'お勉強', 'completed': false},
+    {'name': 'お勉強', 'completed': false},
+    {'name': 'お勉強', 'completed': false},
+  ];
   //  add
   void _isHandleAdd(String value) {
-    _todoList += [
-      {'name': value, 'completed': false}
-    ];
+    setState(() {
+      _todoList += [
+        {'name': value, 'completed': false}
+      ];
+    });
   }
 
 // del
   void _isHandleDel(String value) {
-    _todoList.remove(value);
+    setState(() {
+      _todoList.remove(value);
+    });
   }
 
 // change
   void _isHandleUpdate(int index, String value) {
-    _todoList[index]['name'] = value;
+    setState(() {
+      _todoList[index]['name'] = value;
+    });
+  }
+
+// completed
+  void _isHandleCmptoggle(int index) {
+    setState(() {
+      _todoList[index]['completed'] =
+          _todoList[index]['completed'] ? false : true;
+    });
   }
 
   Widget build(BuildContext context) {
-    return showTodo(todoList: _todoList, onChanged: _isHandleAdd);
+    return showTodo(todoList: _todoList, onChanged: _isHandleCmptoggle);
   }
 }
 
@@ -89,35 +101,33 @@ class showTodo extends StatelessWidget {
   const showTodo({required this.todoList, required this.onChanged, Key? key})
       : super(key: key);
   final List<Map<String, dynamic>> todoList;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<int> onChanged;
 
   void _handleTap(value) {
     onChanged(value);
   }
 
   Widget build(BuildContext context) {
-print(todoList);
     return ListView.builder(
         itemCount: todoList.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-
           return Slidable(
-          actionPane: SlidableDrawerActionPane(),
+            actionPane: SlidableDrawerActionPane(),
             child: new CheckboxListTile(
               title: Text(todoList[index]['name']),
-              value: todoList[index]['completed']?true:false,
+              value: todoList[index]['completed'] ? true : false,
               onChanged: ((value) {
-                _handleTap(value);
-                }),
-              ),
-            );
+                _handleTap(index);
+              }),
+            ),
+          );
         });
   }
 }
 // [ ]:todo自体の管理 statefull
-// [ ]:showTodo
+// [x]:showTodo
 // [ ]:addTodo
 // [ ]:changeTodo
 // [ ];deleteTodo
