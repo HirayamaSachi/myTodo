@@ -115,6 +115,11 @@ class showTodo extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Slidable(
             actionPane: SlidableDrawerActionPane(),
+            secondaryActions: [IconSlideAction(
+              caption: '削除',
+              icon: Icons.delete,
+              color: Colors.red,
+            )],
             child: new CheckboxListTile(
               title: Text(todoList[index]['name']),
               value: todoList[index]['completed'] ? true : false,
