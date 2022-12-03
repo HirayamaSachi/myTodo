@@ -37,7 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
         home: Scaffold(
           appBar: AppBar(title: const Text('Todo app')),
           body: Column(
-            children: [ShowWidget()], // addTodo
+          children: [
+            ShowWidget()
+          ],
           ),
         ));
   }
@@ -52,7 +54,15 @@ class ShowWidget extends StatefulWidget {
 
 class _ShowTodoState extends State<ShowWidget> {
   @override
-  List<Map<String, dynamic>> _todoList = [];
+  List<Map<String, dynamic>> _todoList = [
+    {'name':'お勉強','completed':false},
+    {'name':'お勉強','completed':false},
+    {'name':'お勉強','completed':false},
+    {'name':'お勉強','completed':false},
+    {'name':'お勉強','completed':false},
+    {'name':'お勉強','completed':false},
+    {'name':'お勉強','completed':false},
+    ];
   //  add
   void _isHandleAdd(String value) {
     _todoList += [
@@ -86,38 +96,23 @@ class showTodo extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+print(todoList);
     return ListView.builder(
         itemCount: todoList.length,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          // return Slidable(
-          // actionPane: SlidableDrawerActionPane(),
-          //   child: new CheckboxListTile(
-          //     value: widget.todoLists[index]['completed'],
-          //     onChanged: ((value) {
-          //       setState(() {
-          //         widget.todoLists[index]['completed'] = value!;
-          //       });
-          //     }),
-          //     title: Text(widget.todoLists[index]['name']),
-          //     secondary: IconButton(
-          //         onPressed: () {
-          //           _MyHomePageState().displayDiaLog(
-          //               context: context,
-          //               index: index,
-          //               element: widget.todoLists);
-          //           ;
-          //         },
-          //         icon: Icon(Icons.create)),
-          //     controlAffinity: ListTileControlAffinity.leading,
-          //   ),
-          // );
+
           return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-              child: new CheckboxListTile(
-                  value: todoList[index]['name'],
-                  onChanged: (((value) {
-                    _handleTap(value);
-                  }))));
+          actionPane: SlidableDrawerActionPane(),
+            child: new CheckboxListTile(
+              title: Text(todoList[index]['name']),
+              value: todoList[index]['completed']?true:false,
+              onChanged: ((value) {
+                _handleTap(value);
+                }),
+              ),
+            );
         });
   }
 }
