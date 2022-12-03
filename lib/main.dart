@@ -118,6 +118,7 @@ class showTodo extends StatelessWidget {
             child: new CheckboxListTile(
               title: Text(todoList[index]['name']),
               value: todoList[index]['completed'] ? true : false,
+              // 完了処理
               onChanged: ((value) {
                 _handleTap(index);
               }),
@@ -128,7 +129,7 @@ class showTodo extends StatelessWidget {
 }
 // [ ]:todo自体の管理 statefull
 // [x]:showTodo
-// [ ]:addTodo
+// [x]:addTodo
 // [ ]:changeTodo
 // [ ];deleteTodo
 // class MyHomePage extends StatefulWidget {
