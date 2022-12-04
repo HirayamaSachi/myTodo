@@ -94,9 +94,7 @@ class _ShowTodoState extends State<ShowWidget> {
 
   Widget build(BuildContext context) {
     return showTodo(todoList: _todoList, onChanged: {
-      'Add': _isHandleAdd,
       'Del': _isHandleDel,
-      'Update': _isHandleUpdate,
       'Cmptoggle': _isHandleCmptoggle
     });
   }
