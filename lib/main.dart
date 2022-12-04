@@ -109,6 +109,7 @@ class showTodo extends StatelessWidget {
   final Map<String, Function> onChanged;
   void _handleTap(keyName, value) {
     onChanged.forEach((key, funcName) {
+      // 該当する関数をコールバックする
       if (keyName == key) {
         Function func = funcName;
         funcName(value);
@@ -128,6 +129,7 @@ class showTodo extends StatelessWidget {
               caption: '削除',
               icon: Icons.delete,
               color: Colors.red,
+                // delete処理
               onTap: (){
                 _handleTap('Del', index);
               },
