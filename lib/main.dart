@@ -54,12 +54,12 @@ class _ShowTodoState extends State<ShowWidget> {
   @override
   List<Map<String, dynamic>> _todoList = [
     {'name': 'お勉強', 'completed': false},
-    {'name': 'お勉強', 'completed': false},
-    {'name': 'お勉強', 'completed': false},
-    {'name': 'お勉強', 'completed': false},
-    {'name': 'お勉強', 'completed': false},
-    {'name': 'お勉強', 'completed': false},
-    {'name': 'お勉強', 'completed': false},
+    {'name': 'テスト', 'completed': false},
+    {'name': '宿題', 'completed': false},
+    {'name': '寝る', 'completed': false},
+    {'name': '風呂', 'completed': false},
+    {'name': '食事', 'completed': false},
+    {'name': '掃除', 'completed': false},
   ];
   //  add
   void _isHandleAdd(String value) {
