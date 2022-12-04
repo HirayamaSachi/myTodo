@@ -37,20 +37,20 @@ class _MyHomePageState extends State<MyHomePage> {
         home: Scaffold(
           appBar: AppBar(title: const Text('Todo app')),
           body: Column(
-            children: [ShowWidget()],
+            children: [ShowTodoState()],
           ),
         ));
   }
 }
 
-class ShowWidget extends StatefulWidget {
-  const ShowWidget({Key? key}) : super(key: key);
+class ShowTodoState extends StatefulWidget {
+  const ShowTodoState({Key? key}) : super(key: key);
 
   @override
-  State<ShowWidget> createState() => _ShowTodoState();
+  State<ShowTodoState> createState() => _ShowTodoState();
 }
 
-class _ShowTodoState extends State<ShowWidget> {
+class _ShowTodoState extends State<ShowTodoState> {
   @override
   List<Map<String, dynamic>> _todoList = [
     {'name': 'お勉強', 'completed': false},
