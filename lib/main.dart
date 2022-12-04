@@ -93,7 +93,12 @@ class _ShowTodoState extends State<ShowWidget> {
   }
 
   Widget build(BuildContext context) {
-    return showTodo(todoList: _todoList, onChanged: _isHandleCmptoggle);
+    return showTodo(todoList: _todoList, onChanged: {
+      'Add': _isHandleAdd,
+      'Del': _isHandleDel,
+      'Update': _isHandleUpdate,
+      'Cmptoggle': _isHandleCmptoggle
+    });
   }
 }
 
@@ -101,10 +106,14 @@ class showTodo extends StatelessWidget {
   const showTodo({required this.todoList, required this.onChanged, Key? key})
       : super(key: key);
   final List<Map<String, dynamic>> todoList;
-  final ValueChanged<int> onChanged;
-
-  void _handleTap(value) {
-    onChanged(value);
+  final Map<String, Function> onChanged;
+  void _handleTap(keyName, value) {
+    onChanged.forEach((key, funcName) {
+      if (keyName == key) {
+        Function func = funcName;
+        funcName(value);
+      }
+    });
   }
 
   Widget build(BuildContext context) {
@@ -125,7 +134,7 @@ class showTodo extends StatelessWidget {
               value: todoList[index]['completed'] ? true : false,
               // 完了処理
               onChanged: ((value) {
-                _handleTap(index);
+                _handleTap('Cmptoggle', index);
               }),
             ),
           );
