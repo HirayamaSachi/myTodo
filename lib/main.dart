@@ -71,9 +71,9 @@ class _ShowTodoState extends State<ShowWidget> {
   }
 
 // del
-  void _isHandleDel(String value) {
+  void _isHandleDel(int index) {
     setState(() {
-      _todoList.remove(value);
+      _todoList.remove(_todoList[index]);
     });
   }
 
@@ -128,6 +128,9 @@ class showTodo extends StatelessWidget {
               caption: '削除',
               icon: Icons.delete,
               color: Colors.red,
+              onTap: (){
+                _handleTap('Del', index);
+              },
             )],
             child: new CheckboxListTile(
               title: Text(todoList[index]['name']),
@@ -145,7 +148,7 @@ class showTodo extends StatelessWidget {
 // [x]:showTodo
 // [x]:addTodo
 // [ ]:changeTodo
-// [ ];deleteTodo
+// [x];deleteTodo
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
