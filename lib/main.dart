@@ -158,45 +158,52 @@ class AddTodo extends StatelessWidget {
   final List<Map<String, dynamic>> todoList;
   final ValueChanged<String> onChanged;
 
-  void _addTodo(value) {
-    onChanged(value);
-  }
-
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () {
-        String _text = "";
-        void _handleText(String value) {
-          _text = value;
-        }
-
-        showDialog(
-            context: context,
-            builder: ((context) {
-              final TextEditingController _controller = TextEditingController();
-              return StatefulBuilder(builder: (context, StateSetter setState) {
-                return AlertDialog(
-                  title: Text('タスク追加'),
-                  content: TextField(
-                    controller: _controller,
-                    onChanged: _handleText,
-                  ),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        (_text != "") ? _addTodo(_text) : null;
-                        Navigator.pop(context);
-                      },
-                      child: Text('追加'),
-                    )
-                  ],
-                );
-              });
-            }));
+        // ダイアログを表示
+        insertTodo(context);
       },
     );
+  }
+  // コールバック
+  void _addTodo(value) {
+    onChanged(value);
+  }
+
+  void insertTodo(BuildContext context) {
+    String _text = "";
+    // todoに入れるための一時的な変数
+    void _handleText(String value) {
+      _text = value;
+    }
+    
+    showDialog(
+        context: context,
+        builder: ((context) {
+          final TextEditingController _controller = TextEditingController();
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('タスク追加'),
+              content: TextField(
+                controller: _controller,
+                onChanged: _handleText,
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    (_text != "") ? _addTodo(_text) : null;
+                    // ダイアログを抜ける
+                    Navigator.pop(context);
+                  },
+                  child: Text('追加'),
+                )
+              ],
+            );
+          });
+        }));
   }
 }
 // [ ]:todo自体の管理 statefull
