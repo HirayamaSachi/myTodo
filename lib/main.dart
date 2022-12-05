@@ -93,10 +93,16 @@ class _ShowTodoState extends State<ShowTodoState> {
   }
 
   Widget build(BuildContext context) {
-    return showTodo(todoList: _todoList, onChanged: {
-      'Del': _isHandleDel,
-      'Cmptoggle': _isHandleCmptoggle
-    });
+    return Column(
+      children: [
+        showTodo(todoList: _todoList, onChanged: {
+            'Del': _isHandleDel,
+            'Cmptoggle': _isHandleCmptoggle
+          }
+          ),
+          AddTodo(todoList: _todoList, onChanged: _isHandleAdd),
+      ],
+    );
   }
 }
 
@@ -142,6 +148,55 @@ class showTodo extends StatelessWidget {
             ),
           );
         });
+  }
+}
+
+class AddTodo extends StatelessWidget {
+  const AddTodo({required this.todoList, required this.onChanged, Key? key})
+      : super(key: key);
+
+  final List<Map<String, dynamic>> todoList;
+  final ValueChanged<String> onChanged;
+
+  void _addTodo(value) {
+    onChanged(value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {
+        String _text = "";
+        void _handleText(String value) {
+          _text = value;
+        }
+
+        showDialog(
+            context: context,
+            builder: ((context) {
+              final TextEditingController _controller = TextEditingController();
+              return StatefulBuilder(builder: (context, StateSetter setState) {
+                return AlertDialog(
+                  title: Text('タスク追加'),
+                  content: TextField(
+                    controller: _controller,
+                    onChanged: _handleText,
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        (_text != "") ? _addTodo(_text) : null;
+                        Navigator.pop(context);
+                      },
+                      child: Text('追加'),
+                    )
+                  ],
+                );
+              });
+            }));
+      },
+    );
   }
 }
 // [ ]:todo自体の管理 statefull
