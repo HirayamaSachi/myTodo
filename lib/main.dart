@@ -138,16 +138,20 @@ class showTodo extends StatelessWidget {
                 _handleTap('Del', index);
               },
             )],
-            child: new CheckboxListTile(
-              title: Text(todoList[index]['name']),
-              value: todoList[index]['completed'] ? true : false,
-              // 完了処理
-              onChanged: ((value) {
-                _handleTap('Cmptoggle', index);
-              }),
-            ),
+            child: CmpTodo(index),
           );
         });
+  }
+
+  CheckboxListTile CmpTodo(int index) {
+    return new CheckboxListTile(
+            title: Text(todoList[index]['name']),
+            value: todoList[index]['completed'] ? true : false,
+            // 完了処理
+            onChanged: ((value) {
+              _handleTap('Cmptoggle', index);
+            }),
+          );
   }
 }
 
