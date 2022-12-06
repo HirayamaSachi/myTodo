@@ -99,7 +99,8 @@ class _ShowTodoState extends State<ShowTodoState> {
       children: [
         showTodo(todoList: _todoList, onChanged: {
             'Del': _isHandleDel,
-            'Cmptoggle': _isHandleCmptoggle
+            'Cmptoggle': _isHandleCmptoggle,
+            'Update': _isHandleUpdate
           }
           ),
           AddTodo(todoList: _todoList, onChanged: _isHandleAdd),
@@ -140,21 +141,34 @@ class showTodo extends StatelessWidget {
                 _handleTap('Del', index);
               },
             )],
-            child: CmpTodo(index),
+            // child: CmpTodo(index),
+            child:CheckboxListTile(
+      title: Text(todoList[index]['name']),
+      value: todoList[index]['completed'] ? true : false,
+      // 完了処理
+      onChanged: ((value) {
+        _handleTap('Cmptoggle', index);
+      }),
+      controlAffinity: ListTileControlAffinity.leading,
+      secondary: IconButton(onPressed: (() {
+        if(onChanged.containsKey("Update")){
+          onChanged.forEach((key, value) {
+            if(key=="Update"){
+            void update(data){
+              value(data);
+            }
+            // ページ遷移でupdate処理をかく
+            // UpdateTodo(onChanged: update,todoList: todoList);
+            }
+          });
+        }
+        // UpdateTodo(todoList: todoList, onChanged: ),
+      }), icon: Icon(Icons.create))
+      ),
           );
         });
   }
-
-  CheckboxListTile CmpTodo(int index) {
-    return new CheckboxListTile(
-            title: Text(todoList[index]['name']),
-            value: todoList[index]['completed'] ? true : false,
-            // 完了処理
-            onChanged: ((value) {
-              _handleTap('Cmptoggle', index);
-            }),
-          );
-  }
+  
 }
 
 class AddTodo extends StatelessWidget {
