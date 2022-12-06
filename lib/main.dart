@@ -36,8 +36,10 @@ class _MyHomePageState extends State<MyHomePage> {
         title: 'Todo app',
         home: Scaffold(
           appBar: AppBar(title: const Text('Todo app')),
-          body: Column(
-            children: [ShowTodoState()],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [ShowTodoState()],
+            ),
           ),
         ));
   }
