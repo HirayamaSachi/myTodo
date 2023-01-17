@@ -39,7 +39,11 @@ class _MyHomePageState extends State<MyHomePage> {
           appBar: AppBar(title: const Text('Todo app')),
           body: SingleChildScrollView(
             child: Column(
-              children: [TodoManagerState(child: showTodo(),)],
+              children: [
+                TodoManagerState(
+                  child: showTodo(),
+                )
+              ],
             ),
           ),
         ));
@@ -51,8 +55,7 @@ class showTodo extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: TodoManagerState.of(context,listen: false).todo.length,
-
+        itemCount: TodoManagerState.of(context, listen: false).todo.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
@@ -71,7 +74,10 @@ class showTodo extends StatelessWidget {
             ],
             // child: CmpTodo(index),
             child: CheckboxListTile(
-                title: Text(TodoManagerState.of(context,listen: false).todo[index]['name']),
+                title: (TodoManagerState.of(context, listen: false) != null)
+                    ? Text(TodoManagerState.of(context, listen: false)
+                        ?.todo[index]['name'])
+                    : Text(''),
                 value: Todo[index]['completed'] ? true : false,
                 // 完了処理
                 onChanged: ((value) {
@@ -86,9 +92,12 @@ class showTodo extends StatelessWidget {
                             void update(data) {
                               value(data);
                             }
-                            showDialog(context: context, builder: ((context) {
-                              return EditTodo();
-                            }));
+
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return EditTodo();
+                                }));
                             // ページ遷移でupdate処理をかく
                             // UpdateTodo(onChanged: update,todoList: todoList);
                           }
@@ -96,7 +105,9 @@ class showTodo extends StatelessWidget {
                       }
                       // UpdateTodo(todoList: todoList, onChanged: ),
                     }),
-                    icon: Icon(Icons.create,))),
+                    icon: Icon(
+                      Icons.create,
+                    ))),
           );
         });
   }
