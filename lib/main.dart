@@ -25,41 +25,34 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Todo app',
-        home: Scaffold(
-          appBar: AppBar(title: const Text('Todo app')),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                TodoManagerState(
-                  child: showTodo(),
-                )
-              ],
-            ),
-          ),
-        ));
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          TodoManager(child: Builder(
+            builder: (context) {
+              return const ShowTodo();
+            }
+          ),),
+        ],
+      ),
+    );
   }
 }
 
-class showTodo extends StatelessWidget {
-  const showTodo();
+class ShowTodo extends StatelessWidget {
+  const ShowTodo({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
+    final todo = TodoData.of(context).todo;
     return ListView.builder(
-        itemCount: (TodoManagerState.of(context, listen: true) != null)
-            ? TodoManagerState.of(context, listen: true)?.todo.length
-            : 0,
+        itemCount: todo.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
@@ -72,31 +65,17 @@ class showTodo extends StatelessWidget {
                 color: Colors.red,
                 // delete処理
                 onTap: () {
-                  (TodoManagerState.of(context, listen: true) != null)
-                      ? TodoManagerState.of(context, listen: true)
-                          ?.delete(index)
-                      : null;
+                  TodoData.of(context).data?.delete(index);
                 },
               )
             ],
             // child: CmpTodo(index),
             child: CheckboxListTile(
-                title: (TodoManagerState.of(context, listen: true) != null)
-                    ? Text(TodoManagerState.of(context, listen: true)
-                        ?.todo[index]['name'])
-                    : Text(''),
-                value: ((TodoManagerState.of(context, listen: true) != null)
-                        ? TodoManagerState.of(context, listen: true)
-                            ?.todo[index]['completed']
-                        : false)
-                    ? true
-                    : false,
+                title: Text(todo[index]['name']),
+                value: todo[index]['completed'] ? true : false,
                 // 完了処理
                 onChanged: ((value) {
-                  (TodoManagerState.of(context, listen: true) != null)
-                      ? TodoManagerState.of(context, listen: true)
-                          ?.completeToggle(index)
-                      : null;
+                  TodoData.of(context).data?.completeToggle(index);
                 }),
                 controlAffinity: ListTileControlAffinity.leading,
                 secondary: IconButton(

@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 
 class TodoData extends InheritedWidget {
-  final _crudTodoState? data;
+  final TodoManagerState? data;
   final List<Map<String, dynamic>> todo;
   final Widget child;
 
@@ -12,34 +13,33 @@ class TodoData extends InheritedWidget {
     required this.child,
   }) :assert(child!=null) ,super(key: key, child: child);
 
-
+  static TodoData? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<TodoData>();
+  }
+   static TodoData of(BuildContext context) {
+    final TodoData? result = maybeOf(context);
+    assert(result != null, 'No TodoData found in context');
+    print(result);
+    return result!;
+  }
   @override
   bool updateShouldNotify(TodoData oldWidget) => todo != oldWidget.todo;
 }
 
-class TodoManagerState extends StatefulWidget {
-  const TodoManagerState({Key? key, required this.child}) : super(key: key);
-   static _crudTodoState? of(
-    BuildContext context, {
-    required bool listen,
-  }) =>
-      listen
-          ? context.dependOnInheritedWidgetOfExactType<TodoData>()?.data
-          : (context.getElementForInheritedWidgetOfExactType<TodoData>()?.widget
-              as TodoData).data;
+class TodoManager extends StatefulWidget {
+  const TodoManager({Key? key, required this.child}) : super(key: key);
   final Widget child;
   @override
-  State<TodoManagerState> createState() => _crudTodoState();
+  State<TodoManager> createState() => TodoManagerState();
 }
 
-class _crudTodoState extends State<TodoManagerState> {
-  // List<Map<String, dynamic>> todo = [];
+class TodoManagerState extends State<TodoManager> {
   List<Map<String, dynamic>> todo = [
     {'name': 'お勉強', 'completed': false},
     {'name': 'テスト', 'completed': false},
     {'name': '宿題', 'completed': false},
     {'name': '寝る', 'completed': false},
-    {'name': '風呂', 'completed': false},
+    {'name': '風呂', 'completed': true},
     {'name': '食事', 'completed': false},
     {'name': '掃除', 'completed': false},
   ];
@@ -72,6 +72,10 @@ class _crudTodoState extends State<TodoManagerState> {
 
   @override
   Widget build(BuildContext context) {
-    return TodoData(todo: todo, data: this,child: widget.child);
+    return TodoData(todo: todo, data: this,child: Builder(
+      builder: (context) {
+        return widget.child;
+      }
+    ));
   }
 }
