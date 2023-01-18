@@ -71,6 +71,6 @@ class TodoManagerState extends State<TodoManager> {
 
   @override
   Widget build(BuildContext context) {
-    return TodoData(todo: todo, data: this,child: widget.child);
+    return TodoData(todo: todo, data: this,child: Builder(builder: ((context) => widget.child )));
   }
 }
