@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:my_todo/todoList.dart';
@@ -55,7 +57,9 @@ class showTodo extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: TodoManagerState.of(context, listen: false).todo.length,
+        itemCount: (TodoManagerState.of(context, listen: true) != null)
+            ? TodoManagerState.of(context, listen: true)?.todo.length
+            : 0,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
@@ -68,43 +72,35 @@ class showTodo extends StatelessWidget {
                 color: Colors.red,
                 // delete処理
                 onTap: () {
-                  TodoManagerState.of(context, listen: false).delete(index);
+                  (TodoManagerState.of(context, listen: true) != null)
+                      ? TodoManagerState.of(context, listen: true)
+                          ?.delete(index)
+                      : null;
                 },
               )
             ],
             // child: CmpTodo(index),
             child: CheckboxListTile(
-                title: (TodoManagerState.of(context, listen: false) != null)
-                    ? Text(TodoManagerState.of(context, listen: false)
+                title: (TodoManagerState.of(context, listen: true) != null)
+                    ? Text(TodoManagerState.of(context, listen: true)
                         ?.todo[index]['name'])
                     : Text(''),
-                value: Todo[index]['completed'] ? true : false,
+                value: ((TodoManagerState.of(context, listen: true) != null)
+                        ? TodoManagerState.of(context, listen: true)
+                            ?.todo[index]['completed']
+                        : false)
+                    ? true
+                    : false,
                 // 完了処理
                 onChanged: ((value) {
-                  _handleTap('Cmptoggle', index);
+                  (TodoManagerState.of(context, listen: true) != null)
+                      ? TodoManagerState.of(context, listen: true)
+                          ?.completeToggle(index)
+                      : null;
                 }),
                 controlAffinity: ListTileControlAffinity.leading,
                 secondary: IconButton(
-                    onPressed: (() {
-                      if (onChanged.containsKey("Update")) {
-                        onChanged.forEach((key, value) {
-                          if (key == "Update") {
-                            void update(data) {
-                              value(data);
-                            }
-
-                            showDialog(
-                                context: context,
-                                builder: ((context) {
-                                  return EditTodo();
-                                }));
-                            // ページ遷移でupdate処理をかく
-                            // UpdateTodo(onChanged: update,todoList: todoList);
-                          }
-                        });
-                      }
-                      // UpdateTodo(todoList: todoList, onChanged: ),
-                    }),
+                    onPressed: (() {}),
                     icon: Icon(
                       Icons.create,
                     ))),
