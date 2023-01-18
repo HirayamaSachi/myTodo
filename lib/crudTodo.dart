@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class TodoData extends InheritedWidget {
@@ -19,7 +18,6 @@ class TodoData extends InheritedWidget {
    static TodoData of(BuildContext context) {
     final TodoData? result = maybeOf(context);
     assert(result != null, 'No TodoData found in context');
-    print(result);
     return result!;
   }
   @override
@@ -34,6 +32,7 @@ class TodoManager extends StatefulWidget {
 }
 
 class TodoManagerState extends State<TodoManager> {
+  // List<Map<String, dynamic>> todo = [];
   List<Map<String, dynamic>> todo = [
     {'name': 'お勉強', 'completed': false},
     {'name': 'テスト', 'completed': false},
@@ -72,10 +71,6 @@ class TodoManagerState extends State<TodoManager> {
 
   @override
   Widget build(BuildContext context) {
-    return TodoData(todo: todo, data: this,child: Builder(
-      builder: (context) {
-        return widget.child;
-      }
-    ));
+    return TodoData(todo: todo, data: this,child: widget.child);
   }
 }

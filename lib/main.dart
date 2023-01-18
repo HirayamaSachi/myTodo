@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:my_todo/todoList.dart';
 import 'crudTodo.dart';
 
 void main() {
@@ -34,57 +33,48 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(),
       body: Column(
         children: [
-          TodoManager(child: Builder(
-            builder: (context) {
-              return const ShowTodo();
-            }
-          ),),
+          TodoManager(
+            child: Builder(builder: (BuildContext innerContext) {
+              final todo = TodoData.of(innerContext).todo;
+              return ListView.builder(
+                  itemCount: todo.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext innerContext, int index) {
+                    return Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      secondaryActions: [
+                        IconSlideAction(
+                          caption: '削除',
+                          icon: Icons.delete,
+                          color: Colors.red,
+                          // delete処理
+                          onTap: () {
+                            TodoData.of(innerContext).data?.delete(index);
+                          },
+                        )
+                      ],
+                      // child: CmpTodo(index),
+                      child: CheckboxListTile(
+                          title: Text(todo[index]['name']),
+                          value: todo[index]['completed'] ? true : false,
+                          // 完了処理
+                          onChanged: ((value) {
+                            TodoData.of(innerContext).data?.completeToggle(index);
+                          }),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          secondary: IconButton(
+                              onPressed: (() {}),
+                              icon: Icon(
+                                Icons.create,
+                              ))),
+                    );
+                  });
+            }),
+          ),
         ],
       ),
     );
-  }
-}
-
-class ShowTodo extends StatelessWidget {
-  const ShowTodo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final todo = TodoData.of(context).todo;
-    return ListView.builder(
-        itemCount: todo.length,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-            secondaryActions: [
-              IconSlideAction(
-                caption: '削除',
-                icon: Icons.delete,
-                color: Colors.red,
-                // delete処理
-                onTap: () {
-                  TodoData.of(context).data?.delete(index);
-                },
-              )
-            ],
-            // child: CmpTodo(index),
-            child: CheckboxListTile(
-                title: Text(todo[index]['name']),
-                value: todo[index]['completed'] ? true : false,
-                // 完了処理
-                onChanged: ((value) {
-                  TodoData.of(context).data?.completeToggle(index);
-                }),
-                controlAffinity: ListTileControlAffinity.leading,
-                secondary: IconButton(
-                    onPressed: (() {}),
-                    icon: Icon(
-                      Icons.create,
-                    ))),
-          );
-        });
   }
 }
 
