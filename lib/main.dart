@@ -63,8 +63,9 @@ class ShowTodo extends StatelessWidget {
                 }),
                 controlAffinity: ListTileControlAffinity.leading,
                 secondary: IconButton(
-                    onPressed: (() {
-                      dialogBuilder(context);
+                    onPressed: (() async{
+                      var result =await dialogBuilder(context);
+                      TodoManager.of(context, rebuild: false).create(result.toString());
                     }),
                     icon: Icon(
                       Icons.create,
