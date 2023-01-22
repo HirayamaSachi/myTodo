@@ -12,7 +12,7 @@ Future<void> dialogBuilder(BuildContext context) {
             controller: myController,
             decoration: InputDecoration(labelText: '課題やる'),
             onSubmitted: ((value) {
-              TodoManager.of(context)?.create(value);
+              TodoManager.of(context).create(value);
               Navigator.pop(context);
             }),
           ),

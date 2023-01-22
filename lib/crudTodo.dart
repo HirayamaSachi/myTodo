@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class TodoData extends InheritedWidget {
-  final TodoManagerState? data;
-  final List<Map<String, dynamic>> todo;
+  final TodoManagerState data;
+  final List<TodoFactor> todo;
   final Widget child;
 
   const TodoData({
     key,
-    this.data,
+    required this.data,
     required this.todo,
     required this.child,
   })  : assert(child != null),
@@ -21,7 +21,7 @@ class TodoManager extends StatefulWidget {
   const TodoManager({Key? key, required this.child}) : super(key: key);
   final Widget child;
 
-  static TodoManagerState? of(BuildContext context, {bool rebuild = true}) {
+  static TodoManagerState of(BuildContext context, {bool rebuild = true}) {
     return rebuild
         ? context.dependOnInheritedWidgetOfExactType<TodoData>()!.data
         : (context.getElementForInheritedWidgetOfExactType<TodoData>()!.widget
@@ -35,33 +35,31 @@ class TodoManager extends StatefulWidget {
 
 class TodoManagerState extends State<TodoManager> {
   // List<Map<String, dynamic>> todo = [];
-  List<Map<String, dynamic>> todo = [
-    {'name': 'お勉強', 'completed': false},
-    {'name': 'テスト', 'completed': false},
-    {'name': '宿題', 'completed': false},
-    {'name': '寝る', 'completed': false},
-    {'name': '風呂', 'completed': true},
-    {'name': '食事', 'completed': false},
-    {'name': '掃除', 'completed': false},
+  List<TodoFactor> todo = [
+    TodoFactor(name: 'お勉強'),
+    TodoFactor(name: 'テスト'),
+    TodoFactor(name: '宿題'),
+    TodoFactor(name: '寝る'),
+    TodoFactor(name: '風呂'),
+    TodoFactor(name: '食事'),
+    TodoFactor(name: '掃除'),
   ];
 
   void create(String value) {
     setState(() {
-      todo += [
-        {'name': value, 'completed': false}
-      ];
+      todo += [TodoFactor(name: value)];
     });
   }
 
   void update(int index, String value) {
     setState(() {
-      todo[index]['name'] = value;
+      todo[index].name = value;
     });
   }
 
   void completeToggle(int index) {
     setState(() {
-      todo[index]['completed'] = todo[index]['completed'] ? false : true;
+      todo[index].completed = todo[index].completed ? false : true;
     });
   }
 
@@ -75,4 +73,10 @@ class TodoManagerState extends State<TodoManager> {
   Widget build(BuildContext context) {
     return TodoData(todo: todo, data: this, child: widget.child);
   }
+}
+
+class TodoFactor {
+  TodoFactor({required this.name, this.completed = false});
+  String name;
+  bool completed;
 }
