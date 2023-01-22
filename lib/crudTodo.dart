@@ -21,8 +21,12 @@ class TodoManager extends StatefulWidget {
   const TodoManager({Key? key, required this.child}) : super(key: key);
   final Widget child;
 
-  static TodoManagerState? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<TodoData>()!.data;
+  static TodoManagerState? of(BuildContext context, {bool rebuild = true}) {
+    return rebuild
+        ? context.dependOnInheritedWidgetOfExactType<TodoData>()!.data
+        : (context.getElementForInheritedWidgetOfExactType<TodoData>()!.widget
+                as TodoData)
+            .data;
   }
 
   @override

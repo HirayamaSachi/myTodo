@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'crudTodo.dart';
+import 'addDialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,7 @@ class ShowTodo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todo = TodoManager.of(context)?.todo;
+    print(todo);
     return ListView.builder(
         itemCount: todo?.length,
         shrinkWrap: true,
@@ -46,7 +48,7 @@ class ShowTodo extends StatelessWidget {
                 color: Colors.red,
                 // delete処理
                 onTap: () {
-                  TodoManager.of(context)?.delete(index);
+                  TodoManager.of(context,rebuild: false)?.delete(index);
                 },
               )
             ],
@@ -56,11 +58,13 @@ class ShowTodo extends StatelessWidget {
                 value: todo?[index]['completed'] ? true : false,
                 // 完了処理
                 onChanged: ((value) {
-                  TodoManager.of(context)?.completeToggle(index);
+                  TodoManager.of(context,rebuild: false)?.completeToggle(index);
                 }),
                 controlAffinity: ListTileControlAffinity.leading,
                 secondary: IconButton(
-                    onPressed: (() {}),
+                    onPressed: (() {
+                      dialogBuilder(context);
+                    }),
                     icon: Icon(
                       Icons.create,
                     ))),
