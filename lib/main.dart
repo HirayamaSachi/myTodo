@@ -72,7 +72,7 @@ class ShowTodo extends StatelessWidget {
                         secondary: IconButton(
                             onPressed: (() async{
                               var result= await dialogBuilder(context);
-                              if(result==null){return;}
+                              if(result == null || result == ""){return;}
                               TodoManager.of(context).update(index, result);
                             }),
                             icon: const Icon(
@@ -84,7 +84,7 @@ class ShowTodo extends StatelessWidget {
           FloatingActionButton(
             onPressed: (() async {
               var result = await dialogBuilder(context);
-              if(result==null){return;}
+              if(result == null || result == ""){return;}
               TodoManager.of(context, rebuild: false).create(result.toString());
             }),
             child: Icon(Icons.add),
