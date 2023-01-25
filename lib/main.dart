@@ -40,47 +40,51 @@ class ShowTodo extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ListView.builder(
-              itemCount: todo.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                return Slidable(
-                  actionPane: SlidableDrawerActionPane(),
-                  secondaryActions: [
-                    IconSlideAction(
-                      caption: '削除',
-                      icon: Icons.delete,
-                      color: Colors.red,
-                      // delete処理
-                      onTap: () {
-                        TodoManager.of(context, rebuild: false).delete(index);
-                      },
-                    )
-                  ],
-                  // child: CmpTodo(index),
-                  child: CheckboxListTile(
-                      title: Text(todo[index].name),
-                      value: todo[index].completed ? true : false,
-                      // 完了処理
-                      onChanged: ((value) {
-                        TodoManager.of(context, rebuild: false)
-                            .completeToggle(index);
-                      }),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      secondary: IconButton(
-                          onPressed: null,
-                          icon: Icon(
-                            Icons.create,
-                          ))),
-                );
-              }),
+          Expanded(
+            child: ListView.builder(
+                itemCount: todo.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    secondaryActions: [
+                      IconSlideAction(
+                        caption: '削除',
+                        icon: Icons.delete,
+                        color: Colors.red,
+                        // delete処理
+                        onTap: () {
+                          TodoManager.of(context, rebuild: false).delete(index);
+                        },
+                      )
+                    ],
+                    // child: CmpTodo(index),
+                    child: CheckboxListTile(
+                        title: Text(todo[index].name),
+                        value: todo[index].completed ? true : false,
+                        // 完了処理
+                        onChanged: ((value) {
+                          TodoManager.of(context, rebuild: false)
+                              .completeToggle(index);
+                        }),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        secondary: IconButton(
+                            onPressed: (() async{
+                              var result= await dialogBuilder(context);
+                              if(result==null){return;}
+                              TodoManager.of(context).update(index, result);
+                            }),
+                            icon: const Icon(
+                              Icons.create,
+                            ))),
+                  );
+                }),
+          ),
           FloatingActionButton(
             onPressed: (() async {
               var result = await dialogBuilder(context);
-              if (result == null) {
-                return;
-              }
+              if(result==null){return;}
               TodoManager.of(context, rebuild: false).create(result.toString());
             }),
             child: Icon(Icons.add),
