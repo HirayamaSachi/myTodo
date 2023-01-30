@@ -44,7 +44,6 @@ class ShowTodo extends StatelessWidget {
             child: ListView.builder(
                 itemCount: todo.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
