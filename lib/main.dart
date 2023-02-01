@@ -70,7 +70,7 @@ class ShowTodo extends StatelessWidget {
                         controlAffinity: ListTileControlAffinity.leading,
                         secondary: IconButton(
                             onPressed: (() async{
-                              var result= await dialogBuilder(context);
+                              var result= await dialogBuilder(context, isNew: false);
                               if(result == null || result == ""){return;}
                               TodoManager.of(context).update(index, result);
                             }),
@@ -82,7 +82,7 @@ class ShowTodo extends StatelessWidget {
           ),
           FloatingActionButton(
             onPressed: (() async {
-              var result = await dialogBuilder(context);
+              var result = await dialogBuilder(context, isNew: true);
               if(result == null || result == ""){return;}
               TodoManager.of(context, rebuild: false).create(result.toString());
             }),
