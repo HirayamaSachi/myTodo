@@ -35,15 +35,7 @@ class TodoManager extends StatefulWidget {
 
 class TodoManagerState extends State<TodoManager> {
   // List<Map<String, dynamic>> todo = [];
-  List<TodoFactor> todo = [
-    TodoFactor(name: 'お勉強'),
-    TodoFactor(name: 'テスト'),
-    TodoFactor(name: '宿題'),
-    TodoFactor(name: '寝る'),
-    TodoFactor(name: '風呂'),
-    TodoFactor(name: '食事'),
-    TodoFactor(name: '掃除'),
-  ];
+  List<TodoFactor> todo = [];
 
   void create(String value) {
     setState(() {
