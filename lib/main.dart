@@ -21,9 +21,35 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Scaffold(
-          appBar: AppBar(),
-          body: const TodoManager(child: ShowTodo()),
+        home: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              bottom: const TabBar(tabs: [
+                Tab(
+                  text: 'All',
+                ),
+                Tab(
+                  text: 'Active',
+                ),
+                Tab(
+                  text: 'Completed',
+                ),
+              ]),
+            ),
+            body: const TodoManager(
+                child: TabBarView(children: [
+              ShowTodo(
+                filterType: 'All',
+              ),
+              ShowTodo(
+                filterType: 'Active',
+              ),
+              ShowTodo(
+                filterType: 'Completed',
+              ),
+            ])),
+          ),
         ),
       ),
     );
@@ -31,26 +57,26 @@ class MyApp extends StatelessWidget {
 }
 
 class ShowTodo extends StatelessWidget {
-  const ShowTodo({Key? key}) : super(key: key);
+  const ShowTodo({String this.filterType = 'All', Key? key}) : super(key: key);
+  final filterType;
   @override
   Widget build(BuildContext context) {
-    final todo = TodoManager.of(context).todo;
+    var todo = TodoManager.of(context).todo;
+    switch (filterType) {
+      case 'Active':
+        todo = todo.where((element) => element.completed == false).toList();
+        break;
+      case 'Completed':
+        todo = todo.where((element) => element.completed == true).toList();
+        break;
+      case 'All':
+        break;
+      default:
+        print('Error!:filterTypeの値が不正です');
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          TextButton(child: const Text('All'), onPressed: (() {
-            // TODO: filterかける
-          })),
-          TextButton(child: const Text('Active'), onPressed: (() {
-            // TODO: filterかける
-          })),
-          TextButton(child: const Text('Completed'), onPressed: (() {
-            // TODO: filterかける
-          }))
-        ],),
         Expanded(
           child: ListView.builder(
               itemCount: todo.length,
